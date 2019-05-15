@@ -1,0 +1,85 @@
+<div class="right">
+    <div class="right__header">
+        <div class="search-module"
+             ng-init="search = {
+                              'query' : ''
+                              }">
+            <div class="input-holder">
+
+                <input type="text"
+                       name="namername"
+                       placeholder="Rechercher une adresse"
+                       ng-model="search['query']"
+                       ng-model-options="{ updateOn: 'keyup',
+                                                 debounce: { 'default': 500, 'blur': 0 }}"
+                       ng-change="stations.parameters['q'] = search['query'];" />
+                <div class="zoom-before-input"
+                     ng-if="!search['query']">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </div>
+                <div class="clear-button"
+                     ng-if="search['query']"
+                     ng-click="search.query = undefined;
+                                       stations.parameters['q'] = undefined">
+                    <i class="fa fa-ban" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right__header">
+        <div class="sorts">
+                    <span class="sorts__sort__label">
+                        <span class="sorts__sort__label__text">
+                            Taux de remplissage:
+                        </span>
+                    </span>
+            <div class="controler control-toggle" ng-init="valuestoggle=true">
+                {{ stations.parameters['sort'] = (valuestoggle?'avgfillingrate':'-avgfillingrate'); "" }}
+                <div class="toggle-button-label" ng-class="{'darker': !valuestoggle}">
+                    Croissant
+                </div>
+                <div class="switch">
+                    <input id="values-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                    <label for="values-toggle-1" ng-click="valuestoggle=!valuestoggle"></label>
+                </div>
+                <div class="toggle-button-label" ng-class="{'darker': valuestoggle}">
+                    Décroissant
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right__content">
+        <div class="stations">
+            <div class="station"
+
+                 ods-results="iterstations"
+                 ods-results-context="stations"
+                 ods-results-max="100"
+                 ng-repeat="station in iterstations"
+
+                 ng-aria
+
+                 ng-click="stationsselection.parameters['refine.localisationfo_street'] =
+                                   (stationsselection.parameters['refine.localisationfo_street'] == station.fields.localisationfo_street ?
+                                   undefined : station.fields.localisationfo_street)"
+                 ng-class="{'station--selected': stationsselection.parameters['refine.localisationfo_street'] == station.fields.localisationfo_street}">
+                <span class="station__macaron-container"
+                      ng-init="macaroncolor = 'hsla(210, 100%, ' + (80-station.fields.avgfillingrate*50/100) + '%, 1)';">
+                    <span class="station__macaron"
+                          style="background: linear-gradient(to top, {{ macaroncolor }}, {{ macaroncolor }} {{ station.fields.avgfillingrate | number : 0 }}%, white {{ station.fields.avgfillingrate | number : 0 }}%, white);"></span>
+                    <span class="circle ko"
+                          ng-class="{'ok':station.fields.status == 'OK',
+                                    'partial':station.fields.status == 'Partial'}"></span>
+                </span>
+                <div class="station__info">
+                    <div class="station__info__streetname">
+                        {{ station.fields.localisationfo_street }}
+                    </div>
+                    <div class="station__info__fillingrate">
+                        {{ station.fields.avgfillingrate | number : 0 }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

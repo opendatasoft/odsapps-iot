@@ -1,0 +1,67 @@
+<div class="bottom">
+    <div class="bottom__head">
+        <div class="bottom__head__title">
+            Trilib en quelques chiffres
+        </div>
+        <div class="bottom__head__title--source">
+            <a href="https://smartcity-success.opendatasoft.com/explore/?q=trilib">
+                Voir les données sources
+            </a>
+        </div>
+    </div>
+    <div class="bottom__content">
+                <div class="card card-stats">
+                    <div class="card-header">
+                        Nombre de stations
+                    </div>
+                    <div class="card-body">
+                        <div class="numbers">
+                            {{ metriques.nb_stations }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-stats">
+                    <div class="card-header">
+                        Nombre de bacs
+                    </div>
+                    <div class="card-body ">
+                        <div class="numbers">
+                            {{ metriques.nb_bacs }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-stats">
+                    <div class="card-header">
+                        Taux de remplissage moyen
+                    </div>
+                    <div class="card-body ">
+                        <div class="numbers">
+                            {{ metriques.remplissage_moyen | number : 0 }}
+                        </div>
+                        %
+                    </div>
+                </div>
+                <div class="card card-stats">
+                    <div class="card-header">
+                        Estimation total du poids
+                    </div>
+                    <div class="card-body">
+                        <div class="numbers">
+                            {{ metriques.tonnage_total / 1000 | number : 1 }}
+                        </div>
+                        tonnes
+                    </div>
+                </div>
+                <div class="card card-stats">
+                    <div class="card-header">
+                        Dernière mise à jour
+                    </div>
+                    <div class="card-body">
+                        <div class="numbers">
+                            {{ bacs.dataset.metas.data_processed | date : 'dd MMM yyyy' }}
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+</div>

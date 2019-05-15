@@ -1,0 +1,50 @@
+<div class="middle">
+    <ods-map no-refit="true"
+             scroll-wheel-zoom="false"
+             display-control="false"
+             display-control-single-layer="false"
+             toolbar-fullscreen="false"
+             toolbar-drawing="false"
+             toolbar-geolocation="true"
+             basemap="8d0217">
+        <ods-map-layer context="stations"
+                       color-categories="{'OK':'#19630A','Partial':'#F8B334'}"
+                       color-by-field="status"
+                       color-categories-other="#BA022A"
+                       color-numeric-range-min="0"
+                       picto="dot"
+                       show-marker="false"
+                       display="categories"
+                       point-opacity="1"
+                       border-color="#FFFFFF"
+                       border-opacity="1"
+                       border-size="1"
+                       border-pattern="solid"
+                       caption="false"
+                       size="7"
+                       refine-on-click-context="stationsselection"
+                       refine-on-click-stationsselection-map-field="localisationfo_street"
+                       refine-on-click-stationsselection-context-field="localisationfo_street"
+                       refine-on-click-stationsselection-replace-refine="true"></ods-map-layer>
+        <ods-map-layer context="stationsselection"
+                       show-if="stationsselection.parameters['refine.localisationfo_street']"
+                       color-categories="{'OK':'#19630A','Partial':'#F8B334'}"
+                       color-by-field="status"
+                       color-categories-other="#BA022A"
+                       picto="circle"
+                       show-marker="true"
+                       point-opacity="1"
+                       caption="false"
+                       size="3"
+                       refine-on-click-context="stationsselection"
+                       refine-on-click-stationsselection-map-field="localisationfo_street"
+                       refine-on-click-stationsselection-context-field="localisationfo_street"
+                       refine-on-click-stationsselection-replace-refine="true">
+        </ods-map-layer>
+    </ods-map>
+
+    <%- include('middle-bottom.ejs'); -%>
+
+    <%- include('middle-bottom-modal.ejs'); -%>
+
+</div>

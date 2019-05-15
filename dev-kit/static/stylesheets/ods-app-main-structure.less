@@ -1,0 +1,50 @@
+/* IoT App */
+main {
+  margin: 0;
+  color: var(--font-grey);
+  background-color: var(--light-grey);
+}
+
+.map-app {
+  position: relative;
+  display: flex;
+  height: calc(100vh - var(--headerheight));
+}
+
+.right {
+  position: relative;
+  background-color: white;
+  padding: 0 12px;
+  box-shadow: -2px 0 4px 0 rgba(0, 0, 0, 0.15);
+
+  display: flex;
+  flex-direction: column;
+  z-index: 11;
+
+  width: var(--rightwidth);
+  overflow: hidden; /* Disable horizontal scroll */
+}
+
+.right__header {
+  display: flex;
+  align-items: center;
+}
+
+.right__content {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.middle {
+  width: var(--mapwidth);
+  position: relative;
+}
+
+.middle .odswidget-map {
+  height: var(--mapheight);
+  min-height: inherit;
+}
+
+.middle .odswidget-map__map {
+  min-height: inherit;
+}

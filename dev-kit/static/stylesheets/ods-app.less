@@ -1,0 +1,270 @@
+@import "ods-app-init.less";
+@import "ods-app-main-structure.less";
+
+/* specific RIGHT SIDE */
+.bac--analytics {
+  overflow-y: scroll;
+}
+
+@import "ods-app-search-module.less";
+
+/*** SORT ***/
+.sorts {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--light-grey);
+  padding: 12px 0;
+  width: 100%;
+}
+
+.sorts__sort__label {
+  margin: 0 5px 0 10px;
+}
+
+@import "ods-app-toggle-switch.less";
+
+@import "ods-app-stations.less";
+
+/************************************/
+
+@import "ods-app-cards.less";
+
+/********* MODAL *************/
+.streetviewmodal__content {
+  position: absolute;
+  z-index: 10000;
+  left: calc(50% - 300px);
+  right: calc(50% - 300px);
+  top: calc(50% - 225px);
+  bottom: calc(50% - 225px);
+}
+
+.streetviewmodal__backdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #000000ba;
+  z-index: 9999;
+}
+
+.green {
+  color: var(--green)
+}
+
+.orange, .orange .id__medium__text {
+  color: var(--orange)
+}
+
+.red, .red .id__medium__text {
+  color: var(--red)
+}
+
+/* right modal */
+.right-modal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  overflow: auto;
+  z-index: 12;
+
+  background-color: white;
+
+  transition: 0.3s;
+}
+
+.right-modal.active {
+  width: var(--rightwidth);
+}
+
+.right-modal__close {
+  font-size: 1.3em;
+  display: block;
+  text-align: right;
+  color: var(--box-title);
+}
+.right-modal__close:hover {
+  color: var(--box-title);
+}
+
+/* delay content visibility */
+.right-modal__content {
+  padding: 0 12px;
+  opacity: 0;
+  transition-delay: 0.3s;
+}
+
+.right-modal.active .right-modal__content {
+  opacity: 1;
+}
+
+/* bottom */
+.bottom {
+  height: var(--bottomheight);
+  border-top: 1px solid var(--medium-grey);
+  background-color: var(--box-grey);
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 30px 0;
+}
+
+.bottom__head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.bottom__head__title {
+  font-weight: 400;
+  font-size: 1.1em;
+}
+
+.bottom__head__title--source {
+  font-size: 0.9em;
+}
+
+.bottom__content {
+  background-color: var(--light-grey);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* bottom modal */
+.bottom-modal {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: var(--light-grey);
+  height: 0;
+  max-height: calc(var(--bottomheight) + var(--mapheight));
+  overflow-y: scroll;
+  z-index: 10;
+  transition: 0.3s;
+}
+
+.bottom-modal.active {
+  height: var(--bottommodalplusshowmoreheight);
+  border-top: 1px solid #cad2d3;
+  padding: 15px 10px 0;
+}
+
+.bottom-modal.active.more {
+  height: auto;
+}
+
+.bottom-modal__close {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-size: 2em;
+  z-index: 2;
+}
+
+/* delay content visibility */
+.bottom-modal__content {
+  opacity: 0;
+  transition-delay: 0.3s;
+  padding-top: -2px;
+}
+
+.bottom-modal.active .bottom-modal__content {
+  opacity: 1;
+}
+
+/* bottom-modal content for showmore stuff */
+.bottom-modal__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.bottom-modal__showmore {
+  font-size: 0.9em;
+  text-align: right;
+  margin-right: 20px;
+  margin-bottom: 15px;
+}
+
+.bottom-modal__showmore:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bottom-modal__content__chart__title {
+  margin: 5px 10px;
+}
+
+.bottom-modal__content__chart {
+  background-color: white;
+  border: 1px solid var(--box-border-grey);
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.bottom-modal__content__chart .odswidget-charts {
+  height: calc(var(--bottommodalplusshowmoreheight) - 100px);
+}
+
+/* delay show more modal content visibility */
+.bottom-modal__content__more {
+  opacity: 0;
+  transition-delay: 0.3s;
+  height: 0;
+  overflow: auto;
+}
+
+.bottom-modal.active.more .bottom-modal__content__more {
+  opacity: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+/* checkbox facet */
+.checkbox-facets {
+  display: flex;
+  margin: 0 0 15px;
+}
+
+.checkbox-facet {
+  margin: 0 15px;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-facet:first-child {
+  margin-left: 0;
+}
+
+.checkbox-facet-item {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 2rem;
+}
+
+.checkbox-facet-item:last-child {
+  margin-right: 0;
+}
+
+.checkbox-facet-label {
+  padding-left: .5rem;
+  margin-bottom: 0;
+}
+
+label.checkbox-facet-label {
+  font-weight: 400;
+}
+
+@import "ods-app-timescale.less";
+
+@import "ods-app-chart-and-map-style.less";

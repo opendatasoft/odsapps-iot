@@ -1,0 +1,73 @@
+<ods-dataset-context context="stations,stationsselection,bacs,bacsselection,historique"
+                     bacs-dataset="trilib-temps-reel"
+                     bacs-apikey="41c8e6a85d7e6b7d1cbefc9c710fa471d1d1a30320c00fdb11c5a9c3"
+                     bacs-domain="smartcity-success"
+                     bacsselection-dataset="trilib-temps-reel"
+                     bacsselection-apikey="41c8e6a85d7e6b7d1cbefc9c710fa471d1d1a30320c00fdb11c5a9c3"
+                     bacsselection-domain="smartcity-success"
+                     stations-dataset="trilib-agregation"
+                     stations-apikey="41c8e6a85d7e6b7d1cbefc9c710fa471d1d1a30320c00fdb11c5a9c3"
+                     stations-domain="smartcity-success"
+                     stations-parameters="{'sort':'avgfillingrate'}"
+                     stationsselection-dataset="trilib-agregation"
+                     stationsselection-apikey="41c8e6a85d7e6b7d1cbefc9c710fa471d1d1a30320c00fdb11c5a9c3"
+                     stationsselection-domain="smartcity-success"
+                     historique-dataset="trilib-historique"
+                     historique-apikey="41c8e6a85d7e6b7d1cbefc9c710fa471d1d1a30320c00fdb11c5a9c3"
+                     historique-domain="smartcity-success"
+                     historique-parameters="{'disjunctive.wastetype_designation':true}">
+
+    {{ bacsselection.parameters['refine.localisationfo_street'] = stationsselection.parameters['refine.localisationfo_street']; "" }}
+    {{ historique.parameters['refine.localisationfo_street'] = stationsselection.parameters['refine.localisationfo_street']; "" }}
+
+    <div class="too-small-screen">
+        <h3>
+            This app is optimized for tablets and desktop screens.<br/>
+            Your screen is too small to render this app properly.
+        </h3>
+        <p>
+            A minimum of 460px height is needed to render the portal header and map
+        </p>
+        <p>
+            A minimum of 600px width is needed to render the side banners and keep usability on the map
+        </p>
+        <p>
+            Sorry for the inconvenience
+        </p>
+    </div>
+
+    <div class="map-app"
+         ng-init="modal = {'showmore':false};
+                  metriques = {
+                  'nb_stations' : 0,
+                  'nb_bacs' : 0,
+                  'remplissage_moyen' : 0,
+                  'tonnage_total' : 0 }">
+        <span style="display:none"
+
+              ods-aggregation="avgfillingrate,sumfillingweight"
+
+              ods-aggregation-sumfillingweight-context="bacs"
+              ods-aggregation-sumfillingweight-function="SUM"
+              ods-aggregation-sumfillingweight-expression="fillingweight"
+
+              ods-aggregation-avgfillingrate-context="bacs"
+              ods-aggregation-avgfillingrate-function="AVG"
+              ods-aggregation-avgfillingrate-expression="fillingrate"
+        >
+            {{
+            metriques.nb_stations = stations.dataset.metas.records_count ;
+            metriques.nb_bacs = bacs.dataset.metas.records_count ;
+            metriques.remplissage_moyen = avgfillingrate ;
+            metriques.tonnage_total = sumfillingweight ;
+            "" }}
+        </span>
+
+        <%- include('middle.ejs'); -%>
+
+        <%- include('right.ejs'); -%>
+
+        <%- include('right-modal.ejs'); -%>
+
+    </div>
+</ods-dataset-context>

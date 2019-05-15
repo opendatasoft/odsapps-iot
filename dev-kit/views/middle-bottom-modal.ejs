@@ -1,0 +1,121 @@
+<div class="bottom-modal"
+     ng-class="{'active': stationsselection.parameters['refine.localisationfo_street'],
+                           'more': modal.showmore }">
+    <div class="bottom-modal__content">
+        <a class="bottom-modal__showmore"
+           ng-click="modal.showmore = !modal.showmore">
+            <span ng-show="!modal.showmore">
+                <i class="fa fa-angle-up" aria-hidden="true"></i>
+                Afficher plus
+            </span>
+            <span ng-show="modal.showmore">
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                Afficher moins
+            </span> de données historiques
+        </a>
+        <div class="bottom-modal__content__more">
+
+            <div class="">
+                <div class="col-lg-6">
+                    <div class="checkbox-facets">
+                        <div class="checkbox-facet"
+                             ods-facet-results="facet"
+                             ods-facet-results-context="historique"
+                             ods-facet-results-facet-name="wastetype_designation"
+                             ods-facet-results-sort="alphanum"
+                             ng-repeat="category in facet">
+                            <input type="checkbox" id="{{ category.path }}"
+                                   ods-toggle-model="historique.parameters"
+                                   ods-toggle-key="refine.wastetype_designation"
+                                   ods-toggle-value="{{ category.path }}"/>
+                            <label for="{{ category.path }}"
+                                   class="checkbox-facet-label checkbox-facet-item--{{ category.path | slugify }}">
+                                        <span ng-if="category.name == 'Can / Plastic'">
+                                            Plastique et conserve
+                                        </span>
+                                <span ng-if="category.name == 'Glass'">
+                                            Verre
+                                        </span>
+                                <span ng-if="category.name == 'CB'">
+                                            Carton
+                                        </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <ods-timescale context="historique"
+                                   default-value="month"></ods-timescale>
+                </div>
+            </div>m
+
+            <div class="">
+                <div class="col-sm-6">
+                    <div class="bottom-modal__content__chart">
+                        <div class="bottom-modal__content__chart__title">
+                            Remplissage moyen par type de déchet
+                        </div>
+                        <ods-chart single-y-axis="true"
+                                   display-legend="false"
+                                   align-month="true">
+                            <ods-chart-query context="historique" field-x="wastetype_designation" maxpoints="0">
+                                <ods-chart-serie label-y="Remplissage moyen"
+                                                 expression-y="fillingrate"
+                                                 chart-type="boxplot" function-y="COUNT" color="#666666"
+                                                 scientific-display="true"
+                                                 subseries='[{"func":"MIN","yAxis":"fillingrate"},{"func":"QUANTILES","yAxis":"fillingrate","subsets":25},{"func":"QUANTILES","yAxis":"fillingrate","subsets":50},{"func":"QUANTILES","yAxis":"fillingrate","subsets":75},{"func":"MAX","yAxis":"fillingrate"}]'>
+                                </ods-chart-serie>
+                            </ods-chart-query>
+                        </ods-chart>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="bottom-modal__content__chart">
+                        <div class="bottom-modal__content__chart__title">
+                            Poids moyen par type de déchet (Kg)
+                        </div>
+                        <ods-chart single-y-axis="true"
+                                   display-legend="true"
+                                   align-month="true">
+                            <ods-chart-query context="historique" field-x="timestamp" maxpoints="0" timescale="day"
+                                             stacked="normal" series-breakdown="wastetype_designation">
+                                <ods-chart-serie label-y="Poids moyen par type de déchet (Kg)"
+                                                 expression-y="fillingweight"
+                                                 chart-type="areaspline" function-y="AVG" color="range-Paired"
+                                                 scientific-display="true">
+                                </ods-chart-serie>
+                            </ods-chart-query>
+                        </ods-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="">
+            <div class="col-xs-12">
+                <div class="bottom-modal__content__chart">
+                    <div class="bottom-modal__content__chart__title">
+                        Taux de remplissage
+                    </div>
+                    <ods-chart align-month="true"
+                               single-y-axis="true"
+                               display-legend="false" min="0" max="100">
+                        <ods-chart-query context="historique"
+                                         field-x="timestamp"
+                                         maxpoints="0"
+                                         timescale="hour">
+                            <ods-chart-serie label-y="⚬"
+                                             expression-y="fillingrate"
+                                             chart-type="area"
+                                             function-y="AVG"
+                                             color="hsla(210, 100%, 70%, 0.5)"
+                                             scientific-display="true">
+                            </ods-chart-serie>
+                        </ods-chart-query>
+                    </ods-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

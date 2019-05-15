@@ -1,0 +1,17 @@
+<!-- custom basemap -->
+<script type="text/javascript">
+    angular.module('ods-widgets').config(function (ODSWidgetsConfigProvider) {
+        ODSWidgetsConfigProvider.setConfig({
+            "basemaps": [
+                {
+                    "url": "https://tile.jawg.io/94a71e7c-7633-4ce6-9ed0-723801fcdbb4/{z}/{x}/{y}.png?access-token=QznbDZtsMg2rz5B9TtErATOvsT9SkmA3n98OJbAks4KbmnPpLnunX0EmqbWWLlgJ",
+                    "strictTMS": false,
+                    "provider": "custom",
+                    "label": "Light",
+                    "id": "light"
+                }
+            ]
+        });
+    });
+</script>
+

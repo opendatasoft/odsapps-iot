@@ -1,0 +1,41 @@
+/* Timescale */
+.odswidget-timescale {
+  margin: 0 0 15px;
+}
+
+ul.odswidget-timescale__scale-list {
+  display: flex;
+  justify-content: flex-end;
+}
+
+li.odswidget-timescale__scale {
+  border: 1px solid var(--box-border-grey);
+  background-color: white;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+li.odswidget-timescale__scale a {
+  color: var(--font-grey);
+}
+
+li.odswidget-timescale__scale.odswidget-timescale__scale--active {
+  background-color: hsl(208, 56%, 53%);
+}
+
+li.odswidget-timescale__scale.odswidget-timescale__scale--active a {
+  color: white;
+}
+
+li.odswidget-timescale__scale:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+li.odswidget-timescale__scale:last-child {
+  border-radius: 0 4px 4px 0;
+}
+.odswidget-timescale__scale-link:hover {
+  text-decoration: underline;
+}

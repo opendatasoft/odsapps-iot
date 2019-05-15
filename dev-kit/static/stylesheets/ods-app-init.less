@@ -1,0 +1,74 @@
+/* SET ALL VARIABLES */
+:root {
+  /* Main colors */
+  --main: #00C399;
+  --maintransparent: #00C39930;
+  --darktext: #282828;
+  --macaron-average: hsla(210, 100%, 70%, 0.5);
+
+  /* status / tech colors */
+  --green: #006500;
+  --orange: orange;
+  --red: darkred;
+
+  /* Jawg light basemap colors : darker to lighter */
+  --font-grey: #707070;
+  --box-grey: #F6F8FB;
+  --box-title: #898D92;
+  --box-border-grey: #DEE5EF;
+  --medium-grey: #CBD2DB;
+  --light-grey: #F6F8FB;
+
+  --headerheight: 60px;
+  --footerheight: 40px;
+  --headerandfooterheight: calc(var(--headerheight) + var(--footerheight));
+
+  --bottomheight: 210px;
+  --bottomandheaderheight: calc(var(--bottomheight) + var(--headerheight));
+  --mapheight: calc(100vh - var(--bottomandheaderheight)); /* 250 bottom height + 60 header height */
+
+  --bottommodalheight: 265px;
+  --showmoreheight: 30px;
+  --bottommodalplusshowmoreheight: calc(var(--bottommodalheight) + var(--showmoreheight));
+
+  --rightwidth: 370px;
+  --mapwidth: calc(100% - var(--rightwidth));
+}
+
+/* DELETE FOOTER */
+footer {
+  display: none;
+}
+
+.ods-content:after {
+  height: 0;
+  content: none;
+}
+
+/* App pre-requisites */
+.too-small-screen {
+  display: none;
+  height: calc(100vh - var(--headerheight));
+  text-align: center;
+  padding: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .too-small-screen {
+    display: block !important;
+  }
+
+  .map-app {
+    display: none !important;
+  }
+}
+
+@media screen and (max-height: 460px) {
+  .too-small-screen {
+    display: block !important;
+  }
+
+  .map-app {
+    display: none !important;
+  }
+}

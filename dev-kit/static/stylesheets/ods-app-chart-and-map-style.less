@@ -1,0 +1,29 @@
+/* Chart style */
+rect.highcharts-background {
+  fill: url(#chart-gradient) !important;
+}
+
+g.highcharts-axis-labels.highcharts-yaxis-labels text,
+g.highcharts-axis-labels.highcharts-xaxis-labels text,
+g.highcharts-axis-labels.highcharts-xaxis-labels span {
+  color: var(--box-title) !important;
+  fill: var(--box-title) !important;
+}
+
+path.highcharts-graph {
+  stroke-width: 1px;
+  stroke: hsl(220, 100%, 60%);
+}
+
+text.highcharts-axis-title {
+  display: none;
+}
+
+.odswidget-charts {
+  height: calc(var(--bottommodalplusshowmoreheight) - 85px);
+}
+
+/* Map style */
+.leaflet-control-container .leaflet-top, .leaflet-control-container .leaflet-bottom {
+  z-index: 0;
+}

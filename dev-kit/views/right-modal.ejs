@@ -1,0 +1,113 @@
+<div class="right-modal"
+     ng-class="{'active': stationsselection.parameters['refine.localisationfo_street']}">
+    <div class="right-modal__content">
+        <a href="#" class="right-modal__close"
+           ng-click="stationsselection.parameters['refine.localisationfo_street'] = undefined;
+                               modal.showmore = false">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+
+            <div ods-results="stations"
+                 ods-results-context="stationsselection"
+                 ods-results-max="1"
+                 ng-repeat="station in stations">
+                <div class="station"
+                     ng-click="stationsselection.parameters['refine.localisationfo_street'] =
+                                   (stationsselection.parameters['refine.localisationfo_street'] == station.fields.localisationfo_street ?
+                                   undefined : station.fields.localisationfo_street)"
+                     ng-class="{'station--selected': stationsselection.parameters['refine.localisationfo_street'] == station.fields.localisationfo_street}">
+                    <span class="station__macaron-container"
+                          ng-init="macaroncolor = 'hsla(210, 100%, ' + (80-station.fields.avgfillingrate*50/100) + '%, 1)';">
+                        <span class="station__macaron"
+                              style="background: linear-gradient(to top, {{ macaroncolor }}, {{ macaroncolor }} {{ station.fields.avgfillingrate | number : 0 }}%, white {{ station.fields.avgfillingrate | number : 0 }}%, white);"></span>
+                    </span>
+                    <div class="station__info">
+                        <div class="station__info__streetname">
+                            {{ station.fields.localisationfo_street }}
+                        </div>
+                        <div class="station__info__fillingrate">
+                            {{ station.fields.avgfillingrate | number : 0 }}%
+                        </div>
+                    </div>
+                    <div class="station__streetview">
+                        <a ng-if="station.fields.streetview_url"
+                           ng-href="{{ station.fields.streetview_url }}"
+                           target="_blank">
+                            Street view <i class="fa fa-external-link" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="station">
+                    <span class="station__icon">
+                        <i class="fa fa-trash-o" aria-hidden="true"
+                           ods-tooltip="Un bac est considéré hors service après 18h de non-émission de nouvelle donnée"></i>
+                        <span class="circle ko"
+                              ng-class="{'ok':station.fields.status == 'OK',
+                                        'partial':station.fields.status == 'Partial'}"></span>
+                    </span>
+                    <div class="station__info">
+                        <div class="station__info__bacs">
+                            <span class="station__info__bacs--digit">
+                                {{ station.fields.nbcontainer }}
+                            </span>
+                            bacs
+                        </div>
+                        <div class="station__info__bacs--status">
+                            <span class="station__info__bacs--status--digit ko"
+                                  ng-class="{'ok':station.fields.status == 'OK',
+                                        'partial':station.fields.status == 'Partial'}">
+                                {{ station.fields.nbko }}
+                            </span>
+                            bac(s) hors service
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <div class="cards">
+            <div class="col-xs-6"
+                 ods-analysis="remplissages"
+                 ods-analysis-context="bacsselection"
+                 ods-analysis-x="wastetype_designation"
+                 ods-analysis-serie-avgfillingrate="AVG(fillingrate)"
+                 ng-repeat="remplissage in remplissages.results">
+                <div class="card">
+                    <span class="station__macaron-container"
+                          ng-init="macaroncolor = 'hsla(210, 100%, ' + (80-remplissage.avgfillingrate*50/100) + '%, 1)';">
+                        <span class="station__macaron"
+                              style="background: linear-gradient(to top, {{ macaroncolor }}, {{ macaroncolor }} {{ remplissage.avgfillingrate | number : 0 }}%, white {{ remplissage.avgfillingrate | number : 0 }}%, white);"></span>
+                    </span>
+                    <div class="card-header">
+                        {{ remplissage.x }}
+                    </div>
+                    <div class="card-body ">
+                        <div class="numbers">
+                            {{ remplissage.avgfillingrate | number : 0 }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-6"
+                 ods-aggregation="sumfillingweight"
+                 ods-aggregation-context="bacsselection"
+                 ods-aggregation-function="SUM"
+                 ods-aggregation-expression="fillingweight">
+                <div class="card">
+                    <img src="https://smartcity-success.opendatasoft.com/assets/theme_image/tonnage2.png" />
+                    <div class="card-header">
+                        Tonnage
+                    </div>
+                    <div class="card-body ">
+                        <div class="numbers">
+                            {{ sumfillingweight | number : 0 }}
+                        </div>
+                        Kg
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
