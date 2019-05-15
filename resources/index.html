@@ -1,0 +1,501 @@
+<ods-dataset-context context="stations,stationsselection,bacs,bacsselection,historique"
+                     bacs-dataset="trilib-temps-reel"
+                     bacs-apikey="<APIKEY>"
+                     bacs-domain="smartcity-success"
+                     bacsselection-dataset="trilib-temps-reel"
+                     bacsselection-apikey="<APIKEY>"
+                     bacsselection-domain="smartcity-success"
+                     stations-dataset="trilib-agregation"
+                     stations-apikey="<APIKEY>"
+                     stations-domain="smartcity-success"
+                     stations-parameters="{'sort':'avgfillingrate'}"
+                     stationsselection-dataset="trilib-agregation"
+                     stationsselection-apikey="<APIKEY>"
+                     stationsselection-domain="smartcity-success"
+                     historique-dataset="trilib-historique"
+                     historique-apikey="<APIKEY>"
+                     historique-domain="smartcity-success"
+                     historique-parameters="{'disjunctive.wastetype_designation':true}">
+
+    {{ bacsselection.parameters['refine.localisationfo_street'] = stationsselection.parameters['refine.localisationfo_street']; "" }}
+    {{ historique.parameters['refine.localisationfo_street'] = stationsselection.parameters['refine.localisationfo_street']; "" }}
+
+    <div class="too-small-screen">
+        <h3>
+            This app is optimized for tablets and desktop screens.<br/>
+            Your screen is too small to render this app properly.
+        </h3>
+        <p>
+            A minimum of 460px height is needed to render the portal header and map
+        </p>
+        <p>
+            A minimum of 600px width is needed to render the side banners and keep usability on the map
+        </p>
+        <p>
+            Sorry for the inconvenience
+        </p>
+    </div>
+
+    <div class="map-app"
+         ng-init="modal = {'showmore':false};
+                  metriques = {
+                  'nb_stations' : 0,
+                  'nb_bacs' : 0,
+                  'remplissage_moyen' : 0,
+                  'tonnage_total' : 0 }">
+        <span style="display:none"
+
+              ods-aggregation="avgfillingrate,sumfillingweight"
+
+              ods-aggregation-sumfillingweight-context="bacs"
+              ods-aggregation-sumfillingweight-function="SUM"
+              ods-aggregation-sumfillingweight-expression="fillingweight"
+
+              ods-aggregation-avgfillingrate-context="bacs"
+              ods-aggregation-avgfillingrate-function="AVG"
+              ods-aggregation-avgfillingrate-expression="fillingrate"
+        >
+            {{
+            metriques.nb_stations = stations.dataset.metas.records_count ;
+            metriques.nb_bacs = bacs.dataset.metas.records_count ;
+            metriques.remplissage_moyen = avgfillingrate ;
+            metriques.tonnage_total = sumfillingweight ;
+            "" }}
+        </span>
+
+        <div class="middle">
+    <ods-map no-refit="true"
+             scroll-wheel-zoom="false"
+             display-control="false"
+             display-control-single-layer="false"
+             toolbar-fullscreen="false"
+             toolbar-drawing="false"
+             toolbar-geolocation="true"
+             basemap="8d0217">
+        <ods-map-layer context="stations"
+                       color-categories="{'OK':'#19630A','Partial':'#F8B334'}"
+                       color-by-field="status"
+                       color-categories-other="#BA022A"
+                       color-numeric-range-min="0"
+                       picto="dot"
+                       show-marker="false"
+                       display="categories"
+                       point-opacity="1"
+                       border-color="#FFFFFF"
+                       border-opacity="1"
+                       border-size="1"
+                       border-pattern="solid"
+                       caption="false"
+                       size="7"
+                       refine-on-click-context="stationsselection"
+                       refine-on-click-stationsselection-map-field="localisationfo_street"
+                       refine-on-click-stationsselection-context-field="localisationfo_street"
+                       refine-on-click-stationsselection-replace-refine="true"></ods-map-layer>
+        <ods-map-layer context="stationsselection"
+                       show-if="stationsselection.parameters['refine.localisationfo_street']"
+                       color-categories="{'OK':'#19630A','Partial':'#F8B334'}"
+                       color-by-field="status"
+                       color-categories-other="#BA022A"
+                       picto="circle"
+                       show-marker="true"
+                       point-opacity="1"
+                       caption="false"
+                       size="3"
+                       refine-on-click-context="stationsselection"
+                       refine-on-click-stationsselection-map-field="localisationfo_street"
+                       refine-on-click-stationsselection-context-field="localisationfo_street"
+                       refine-on-click-stationsselection-replace-refine="true">
+        </ods-map-layer>
+    </ods-map>
+
+    <div class="bottom">
+    <div class="bottom__head">
+        <div class="bottom__head__title">
+            Trilib en quelques chiffres
+        </div>
+        <div class="bottom__head__title--source">
+            <a href="https://smartcity-success.opendatasoft.com/explore/?q=trilib">
+                Voir les données sources
+            </a>
+        </div>
+    </div>
+    <div class="bottom__content">
+                <div class="card card-stats">
+                    <div class="card-header">
+                        Nombre de stations
+                    </div>
+                    <div class="card-body">
+                        <div class="numbers">
+                            {{ metriques.nb_stations }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-stats">
+                    <div class="card-header">
+                        Nombre de bacs
+                    </div>
+                    <div class="card-body ">
+                        <div class="numbers">
+                            {{ metriques.nb_bacs }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-stats">
+                    <div class="card-header">
+                        Taux de remplissage moyen
+                    </div>
+                    <div class="card-body ">
+                        <div class="numbers">
+                            {{ metriques.remplissage_moyen | number : 0 }}
+                        </div>
+                        %
+                    </div>
+                </div>
+                <div class="card card-stats">
+                    <div class="card-header">
+                        Estimation total du poids
+                    </div>
+                    <div class="card-body">
+                        <div class="numbers">
+                            {{ metriques.tonnage_total / 1000 | number : 1 }}
+                        </div>
+                        tonnes
+                    </div>
+                </div>
+                <div class="card card-stats">
+                    <div class="card-header">
+                        Dernière mise à jour
+                    </div>
+                    <div class="card-body">
+                        <div class="numbers">
+                            {{ bacs.dataset.metas.data_processed | date : 'dd MMM yyyy' }}
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+</div>
+    <div class="bottom-modal"
+     ng-class="{'active': stationsselection.parameters['refine.localisationfo_street'],
+                           'more': modal.showmore }">
+    <div class="bottom-modal__content">
+        <a class="bottom-modal__showmore"
+           ng-click="modal.showmore = !modal.showmore">
+            <span ng-show="!modal.showmore">
+                <i class="fa fa-angle-up" aria-hidden="true"></i>
+                Afficher plus
+            </span>
+            <span ng-show="modal.showmore">
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                Afficher moins
+            </span> de données historiques
+        </a>
+        <div class="bottom-modal__content__more">
+
+            <div class="">
+                <div class="col-lg-6">
+                    <div class="checkbox-facets">
+                        <div class="checkbox-facet"
+                             ods-facet-results="facet"
+                             ods-facet-results-context="historique"
+                             ods-facet-results-facet-name="wastetype_designation"
+                             ods-facet-results-sort="alphanum"
+                             ng-repeat="category in facet">
+                            <input type="checkbox" id="{{ category.path }}"
+                                   ods-toggle-model="historique.parameters"
+                                   ods-toggle-key="refine.wastetype_designation"
+                                   ods-toggle-value="{{ category.path }}"/>
+                            <label for="{{ category.path }}"
+                                   class="checkbox-facet-label checkbox-facet-item--{{ category.path | slugify }}">
+                                        <span ng-if="category.name == 'Can / Plastic'">
+                                            Plastique et conserve
+                                        </span>
+                                <span ng-if="category.name == 'Glass'">
+                                            Verre
+                                        </span>
+                                <span ng-if="category.name == 'CB'">
+                                            Carton
+                                        </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <ods-timescale context="historique"
+                                   default-value="month"></ods-timescale>
+                </div>
+            </div>m
+
+            <div class="">
+                <div class="col-sm-6">
+                    <div class="bottom-modal__content__chart">
+                        <div class="bottom-modal__content__chart__title">
+                            Remplissage moyen par type de déchet
+                        </div>
+                        <ods-chart single-y-axis="true"
+                                   display-legend="false"
+                                   align-month="true">
+                            <ods-chart-query context="historique" field-x="wastetype_designation" maxpoints="0">
+                                <ods-chart-serie label-y="Remplissage moyen"
+                                                 expression-y="fillingrate"
+                                                 chart-type="boxplot" function-y="COUNT" color="#666666"
+                                                 scientific-display="true"
+                                                 subseries='[{"func":"MIN","yAxis":"fillingrate"},{"func":"QUANTILES","yAxis":"fillingrate","subsets":25},{"func":"QUANTILES","yAxis":"fillingrate","subsets":50},{"func":"QUANTILES","yAxis":"fillingrate","subsets":75},{"func":"MAX","yAxis":"fillingrate"}]'>
+                                </ods-chart-serie>
+                            </ods-chart-query>
+                        </ods-chart>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="bottom-modal__content__chart">
+                        <div class="bottom-modal__content__chart__title">
+                            Poids moyen par type de déchet (Kg)
+                        </div>
+                        <ods-chart single-y-axis="true"
+                                   display-legend="true"
+                                   align-month="true">
+                            <ods-chart-query context="historique" field-x="timestamp" maxpoints="0" timescale="day"
+                                             stacked="normal" series-breakdown="wastetype_designation">
+                                <ods-chart-serie label-y="Poids moyen par type de déchet (Kg)"
+                                                 expression-y="fillingweight"
+                                                 chart-type="areaspline" function-y="AVG" color="range-Paired"
+                                                 scientific-display="true">
+                                </ods-chart-serie>
+                            </ods-chart-query>
+                        </ods-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="">
+            <div class="col-xs-12">
+                <div class="bottom-modal__content__chart">
+                    <div class="bottom-modal__content__chart__title">
+                        Taux de remplissage
+                    </div>
+                    <ods-chart align-month="true"
+                               single-y-axis="true"
+                               display-legend="false" min="0" max="100">
+                        <ods-chart-query context="historique"
+                                         field-x="timestamp"
+                                         maxpoints="0"
+                                         timescale="hour">
+                            <ods-chart-serie label-y="⚬"
+                                             expression-y="fillingrate"
+                                             chart-type="area"
+                                             function-y="AVG"
+                                             color="hsla(210, 100%, 70%, 0.5)"
+                                             scientific-display="true">
+                            </ods-chart-serie>
+                        </ods-chart-query>
+                    </ods-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+        <div class="right">
+    <div class="right__header">
+        <div class="search-module"
+             ng-init="search = {
+                              'query' : ''
+                              }">
+            <div class="input-holder">
+
+                <input type="text"
+                       name="namername"
+                       placeholder="Rechercher une adresse"
+                       ng-model="search['query']"
+                       ng-model-options="{ updateOn: 'keyup',
+                                                 debounce: { 'default': 500, 'blur': 0 }}"
+                       ng-change="stations.parameters['q'] = search['query'];" />
+                <div class="zoom-before-input"
+                     ng-if="!search['query']">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </div>
+                <div class="clear-button"
+                     ng-if="search['query']"
+                     ng-click="search.query = undefined;
+                                       stations.parameters['q'] = undefined">
+                    <i class="fa fa-ban" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right__header">
+        <div class="sorts">
+                    <span class="sorts__sort__label">
+                        <span class="sorts__sort__label__text">
+                            Taux de remplissage:
+                        </span>
+                    </span>
+            <div class="controler control-toggle" ng-init="valuestoggle=true">
+                {{ stations.parameters['sort'] = (valuestoggle?'avgfillingrate':'-avgfillingrate'); "" }}
+                <div class="toggle-button-label" ng-class="{'darker': !valuestoggle}">
+                    Croissant
+                </div>
+                <div class="switch">
+                    <input id="values-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                    <label for="values-toggle-1" ng-click="valuestoggle=!valuestoggle"></label>
+                </div>
+                <div class="toggle-button-label" ng-class="{'darker': valuestoggle}">
+                    Décroissant
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right__content">
+        <div class="stations">
+            <div class="station"
+
+                 ods-results="iterstations"
+                 ods-results-context="stations"
+                 ods-results-max="100"
+                 ng-repeat="station in iterstations"
+
+                 ng-aria
+
+                 ng-click="stationsselection.parameters['refine.localisationfo_street'] =
+                                   (stationsselection.parameters['refine.localisationfo_street'] == station.fields.localisationfo_street ?
+                                   undefined : station.fields.localisationfo_street)"
+                 ng-class="{'station--selected': stationsselection.parameters['refine.localisationfo_street'] == station.fields.localisationfo_street}">
+                <span class="station__macaron-container"
+                      ng-init="macaroncolor = 'hsla(210, 100%, ' + (80-station.fields.avgfillingrate*50/100) + '%, 1)';">
+                    <span class="station__macaron"
+                          style="background: linear-gradient(to top, {{ macaroncolor }}, {{ macaroncolor }} {{ station.fields.avgfillingrate | number : 0 }}%, white {{ station.fields.avgfillingrate | number : 0 }}%, white);"></span>
+                    <span class="circle ko"
+                          ng-class="{'ok':station.fields.status == 'OK',
+                                    'partial':station.fields.status == 'Partial'}"></span>
+                </span>
+                <div class="station__info">
+                    <div class="station__info__streetname">
+                        {{ station.fields.localisationfo_street }}
+                    </div>
+                    <div class="station__info__fillingrate">
+                        {{ station.fields.avgfillingrate | number : 0 }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="right-modal"
+     ng-class="{'active': stationsselection.parameters['refine.localisationfo_street']}">
+    <div class="right-modal__content">
+        <a href="#" class="right-modal__close"
+           ng-click="stationsselection.parameters['refine.localisationfo_street'] = undefined;
+                               modal.showmore = false">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+
+            <div ods-results="stations"
+                 ods-results-context="stationsselection"
+                 ods-results-max="1"
+                 ng-repeat="station in stations">
+                <div class="station"
+                     ng-click="stationsselection.parameters['refine.localisationfo_street'] =
+                                   (stationsselection.parameters['refine.localisationfo_street'] == station.fields.localisationfo_street ?
+                                   undefined : station.fields.localisationfo_street)"
+                     ng-class="{'station--selected': stationsselection.parameters['refine.localisationfo_street'] == station.fields.localisationfo_street}">
+                    <span class="station__macaron-container"
+                          ng-init="macaroncolor = 'hsla(210, 100%, ' + (80-station.fields.avgfillingrate*50/100) + '%, 1)';">
+                        <span class="station__macaron"
+                              style="background: linear-gradient(to top, {{ macaroncolor }}, {{ macaroncolor }} {{ station.fields.avgfillingrate | number : 0 }}%, white {{ station.fields.avgfillingrate | number : 0 }}%, white);"></span>
+                    </span>
+                    <div class="station__info">
+                        <div class="station__info__streetname">
+                            {{ station.fields.localisationfo_street }}
+                        </div>
+                        <div class="station__info__fillingrate">
+                            {{ station.fields.avgfillingrate | number : 0 }}%
+                        </div>
+                    </div>
+                    <div class="station__streetview">
+                        <a ng-if="station.fields.streetview_url"
+                           ng-href="{{ station.fields.streetview_url }}"
+                           target="_blank">
+                            Street view <i class="fa fa-external-link" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="station">
+                    <span class="station__icon">
+                        <i class="fa fa-trash-o" aria-hidden="true"
+                           ods-tooltip="Un bac est considéré hors service après 18h de non-émission de nouvelle donnée"></i>
+                        <span class="circle ko"
+                              ng-class="{'ok':station.fields.status == 'OK',
+                                        'partial':station.fields.status == 'Partial'}"></span>
+                    </span>
+                    <div class="station__info">
+                        <div class="station__info__bacs">
+                            <span class="station__info__bacs--digit">
+                                {{ station.fields.nbcontainer }}
+                            </span>
+                            bacs
+                        </div>
+                        <div class="station__info__bacs--status">
+                            <span class="station__info__bacs--status--digit ko"
+                                  ng-class="{'ok':station.fields.status == 'OK',
+                                        'partial':station.fields.status == 'Partial'}">
+                                {{ station.fields.nbko }}
+                            </span>
+                            bac(s) hors service
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <div class="cards">
+            <div class="col-xs-6"
+                 ods-analysis="remplissages"
+                 ods-analysis-context="bacsselection"
+                 ods-analysis-x="wastetype_designation"
+                 ods-analysis-serie-avgfillingrate="AVG(fillingrate)"
+                 ng-repeat="remplissage in remplissages.results">
+                <div class="card">
+                    <span class="station__macaron-container"
+                          ng-init="macaroncolor = 'hsla(210, 100%, ' + (80-remplissage.avgfillingrate*50/100) + '%, 1)';">
+                        <span class="station__macaron"
+                              style="background: linear-gradient(to top, {{ macaroncolor }}, {{ macaroncolor }} {{ remplissage.avgfillingrate | number : 0 }}%, white {{ remplissage.avgfillingrate | number : 0 }}%, white);"></span>
+                    </span>
+                    <div class="card-header">
+                        {{ remplissage.x }}
+                    </div>
+                    <div class="card-body ">
+                        <div class="numbers">
+                            {{ remplissage.avgfillingrate | number : 0 }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-6"
+                 ods-aggregation="sumfillingweight"
+                 ods-aggregation-context="bacsselection"
+                 ods-aggregation-function="SUM"
+                 ods-aggregation-expression="fillingweight">
+                <div class="card">
+                    <img src="https://smartcity-success.opendatasoft.com/assets/theme_image/tonnage2.png" />
+                    <div class="card-header">
+                        Tonnage
+                    </div>
+                    <div class="card-body ">
+                        <div class="numbers">
+                            {{ sumfillingweight | number : 0 }}
+                        </div>
+                        Kg
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</ods-dataset-context>
